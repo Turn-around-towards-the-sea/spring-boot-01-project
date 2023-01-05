@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:表示配置sql映射，namespace：命名空间，唯一区分一个sql映射文件 -->
+<mapper namespace="com.feng480.mapper.UserMapper">
+
+    <resultMap id="userMap" type="User">
+        <id property="id" column="id" />
+        <result property="userName" column="userName" />
+        <result property="password" column="password" />
+        <result property="sex" column="sex" />
+        <result property="age" column="age" />
+        <result property="birthday" column="birthday" />
+    </resultMap>
+
+    <select id="findAll" resultMap="userMap">
+        SELECT id,userName,`password`,sex,age,birthday FROM tb_user
+    </select>
+
+    <select id="findById" parameterType="long" resultMap="userMap">
+        SELECT id,userName,`password`,sex,age,birthday FROM tb_user WHERE id=#{id}
+    </select>
+
+    <insert id="add" parameterType="User">
+        INSERT INTO tb_user(userName,`password`,sex,age,birthday)
+        VALUES(#{userName},#{password},#{sex},#{age},#{birthday})
+    </insert>
+
+    <update id="update" parameterType="User">
+        UPDATE tb_user
+        <set>
+            <if test="userName != null">
+                userName=#{userName},
+            </if>
+
+            <if test="password != null">
+                password=#{password},
+            </if>
+
+            <if test="sex != null">
+                sex=#{sex},
+            </if>
+
+            <if test="age != null">
+                age=#{age},
+            </if>
+
+            <if test="birthday != null">
+                birthday=#{birthday},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        DELETE FROM tb_user WHERE id=#{id}
+    </delete>
+
+</mapper>
